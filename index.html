@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Mini project report: Event Management System">
+<title>Event Management System — Mini Project Report</title>
+<style>
+:root {
+  color-scheme: light;
+  --ink: #202733; --muted: #657184; --line: #e4e8ee;
+  --paper: #ffffff; --canvas: #f5f7fa; --accent: #315f9b; --accent-soft: #edf4fc;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 20px; }
+body { margin: 0; background: var(--canvas); color: var(--ink); font: 16px/1.75 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+a { color: var(--accent); }
+header { background: var(--paper); border-bottom: 1px solid var(--line); }
+.topbar { max-width: 1120px; margin: auto; padding: 18px 22px; display:flex; align-items:center; justify-content:space-between; gap:14px; }
+.brand { font-size: 14px; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; }
+.pill { border:1px solid var(--line); color:var(--muted); border-radius:999px; padding:5px 10px; font-size:12px; white-space:nowrap; }
+.hero { max-width: 1120px; margin:auto; padding: 54px 22px 48px; }
+.eyebrow { color:var(--accent); font-weight:750; text-transform:uppercase; letter-spacing:.12em; font-size:12px; }
+h1 { font-size:clamp(2.1rem, 6vw, 4.1rem); line-height:1.08; letter-spacing:-.045em; margin:12px 0 18px; max-width:780px; }
+.lead { color:var(--muted); max-width:690px; font-size:18px; margin:0; }
+.hero-meta { display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
+main { max-width:1120px; margin:0 auto; padding: 0 22px 64px; display:grid; grid-template-columns:250px minmax(0, 1fr); gap:28px; align-items:start; }
+nav { position:sticky; top:16px; background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:18px; max-height:calc(100vh - 32px); overflow:auto; }
+nav h2 { margin:0 0 12px; font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
+nav a { display:block; text-decoration:none; padding:7px 8px; border-radius:8px; font-size:13px; line-height:1.4; color:var(--ink); }
+nav a:hover { background:var(--accent-soft); color:var(--accent); }
+article { background:var(--paper); border:1px solid var(--line); border-radius:16px; padding:clamp(22px, 4vw, 48px); min-width:0; }
+article h1, article h2, article h3 { line-height:1.3; letter-spacing:-.02em; }
+article h1 { font-size:2rem; margin-top:2.4em; }
+article h1:first-child { margin-top:0; }
+article h2 { font-size:1.45rem; margin-top:2.1em; padding-bottom:9px; border-bottom:1px solid var(--line); }
+article h3 { font-size:1.12rem; margin-top:1.7em; }
+article p { margin: .8em 0; }
+article ul, article ol { padding-left:1.4em; }
+article li { margin:.3em 0; }
+.table-wrap { overflow-x:auto; margin:1.3em 0; }
+table { border-collapse:collapse; width:100%; font-size:14px; }
+th, td { border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top; }
+th { background:#f2f5f9; font-weight:700; }
+footer { max-width:1120px; margin:auto; padding:0 22px 36px; color:var(--muted); font-size:13px; }
+@media (max-width: 760px) {
+  .topbar { padding:14px 18px; }
+  .hero { padding:38px 18px 34px; }
+  main { display:block; padding:0 14px 42px; }
+  nav { position:static; max-height:none; margin-bottom:16px; }
+  nav a { display:inline-block; margin:2px 3px 2px 0; background:#f6f8fb; }
+  article { padding:22px 18px; }
+  article h1 { font-size:1.7rem; }
+}
+@media print {
+  body { background:#fff; }
+  .topbar, nav, .hero-meta { display:none; }
+  .hero { padding:0 0 20px; }
+  main { display:block; padding:0; }
+  article { border:0; padding:0; }
+}
+</style>
+</head>
+<body>
+<header><div class="topbar"><div class="brand">Mini Project Report</div><div class="pill">Event Management System</div></div></header>
+<section class="hero">
+  <div class="eyebrow">Computer Science · Mini Project</div>
+  <h1>Event Management System</h1>
+  <p class="lead">A web-based project report exploring event planning, registration, scheduling, and event information management through a centralized platform.</p>
+  <div class="hero-meta"><span class="pill">Project Documentation</span><span class="pill">Responsive layout</span><span class="pill">Mobile-friendly</span></div>
+</section>
+<main>
+<nav aria-label="Table of contents"><h2>On this page</h2><a href="#acknowledgement">ACKNOWLEDGEMENT</a>
+<a href="#abstract">ABSTRACT</a>
+<a href="#1-introduction">1. INTRODUCTION</a>
+<a href="#2-system-analysis">2. SYSTEM ANALYSIS</a>
+<a href="#1-technical-feasibility">1. Technical Feasibility</a>
+<a href="#2-economic-feasibility">2. Economic Feasibility</a>
+<a href="#3-operational-feasibility">3. Operational Feasibility</a>
+<a href="#4-schedule-feasibility">4. Schedule Feasibility</a>
+<a href="#1-user-registration-the-system-may-allow-new-users-to-create-an-account">1. User Registration: The system may allow new users to create an account.</a>
+<a href="#2-user-login-registered-users-can-log-in-using-their-credentials">2. User Login: Registered users can log in using their credentials.</a>
+<a href="#3-view-events-users-can-browse-available-events-and-their-details">3. View Events: Users can browse available events and their details.</a>
+<a href="#4-event-registration-users-can-register-for-selected-events">4. Event Registration: Users can register for selected events.</a>
+<a href="#5-event-management-administrators-can-add-edit-and-delete-event-details">5. Event Management: Administrators can add, edit, and delete event details.</a>
+<a href="#6-registration-management-administrators-can-view-and-manage-participant-registrations">6. Registration Management: Administrators can view and manage participant registrations.</a>
+<a href="#7-database-management-the-system-stores-and-retrieves-event-and-registration-information">7. Database Management: The system stores and retrieves event and registration information.</a>
+<a href="#8-logout-users-and-administrators-can-securely-end-their-sessions">8. Logout: Users and administrators can securely end their sessions.</a>
+<a href="#3-system-requirements">3. SYSTEM REQUIREMENTS</a>
+<a href="#1-user-registration-allow-users-to-create-an-account-if-registration-is-implemented">1. User Registration: Allow users to create an account if registration is implemented.</a>
+<a href="#2-user-login-provide-login-functionality-for-registered-users">2. User Login: Provide login functionality for registered users.</a>
+<a href="#3-view-events-display-available-events-with-their-names-dates-times-venues-and-descriptions">3. View Events: Display available events with their names, dates, times, venues, and descriptions.</a>
+<a href="#4-event-registration-allow-users-to-register-for-selected-events">4. Event Registration: Allow users to register for selected events.</a>
+<a href="#5-add-events-allow-the-administrator-to-add-new-events">5. Add Events: Allow the administrator to add new events.</a>
+<a href="#6-update-events-allow-the-administrator-to-modify-event-information">6. Update Events: Allow the administrator to modify event information.</a>
+<a href="#7-delete-events-allow-the-administrator-to-remove-events-when-necessary">7. Delete Events: Allow the administrator to remove events when necessary.</a>
+<a href="#8-manage-registrations-enable-the-administrator-to-view-participant-registration-details">8. Manage Registrations: Enable the administrator to view participant registration details.</a>
+<a href="#9-database-operations-store-retrieve-and-update-event-and-registration-records">9. Database Operations: Store, retrieve, and update event and registration records.</a>
+<a href="#10-logout-allow-authenticated-users-and-administrators-to-end-their-sessions">10. Logout: Allow authenticated users and administrators to end their sessions.</a>
+<a href="#1-user-table">1. User Table</a>
+<a href="#2-event-table">2. Event Table</a>
+<a href="#3-registration-table">3. Registration Table</a>
+<a href="#4-system-design">4. SYSTEM DESIGN</a>
+<a href="#1-presentation-layer">1. Presentation Layer</a>
+<a href="#2-application-layer">2. Application Layer</a>
+<a href="#3-database-layer">3. Database Layer</a>
+<a href="#1-user-management-handles-user-registration-and-login">1. User Management: Handles user registration and login.</a>
+<a href="#2-event-management-adds-updates-deletes-and-displays-event-information">2. Event Management: Adds, updates, deletes, and displays event information.</a>
+<a href="#3-registration-management-processes-and-maintains-event-registrations">3. Registration Management: Processes and maintains event registrations.</a>
+<a href="#4-database-management-stores-and-retrieves-user-event-and-registration-records">4. Database Management: Stores and retrieves user, event, and registration records.</a>
+<a href="#1-user-table-2">1. User Table</a>
+<a href="#2-event-table-2">2. Event Table</a>
+<a href="#3-registration-table-2">3. Registration Table</a>
+<a href="#1-user-module">1. User Module</a>
+<a href="#2-administrator-module">2. Administrator Module</a>
+<a href="#3-event-management-module">3. Event Management Module</a>
+<a href="#4-event-registration-module">4. Event Registration Module</a>
+<a href="#5-database-module">5. Database Module</a>
+<a href="#5-system-testing">5. SYSTEM TESTING</a>
+<a href="#1-to-verify-that-all-modules-work-correctly">1. To verify that all modules work correctly.</a>
+<a href="#2-to-identify-and-remove-errors-in-the-application">2. To identify and remove errors in the application.</a>
+<a href="#3-to-check-the-accuracy-of-data-stored-in-the-database">3. To check the accuracy of data stored in the database.</a>
+<a href="#4-to-verify-user-registration-and-login-functionality">4. To verify user registration and login functionality.</a>
+<a href="#5-to-test-event-creation-updating-and-deletion">5. To test event creation, updating, and deletion.</a>
+<a href="#6-to-verify-event-registration-and-registration-records">6. To verify event registration and registration records.</a>
+<a href="#7-to-check-input-validation-and-error-messages">7. To check input validation and error messages.</a>
+<a href="#8-to-ensure-that-unauthorized-users-cannot-access-administrative-functions">8. To ensure that unauthorized users cannot access administrative functions.</a>
+<a href="#9-to-verify-that-the-website-works-properly-in-supported-web-browsers">9. To verify that the website works properly in supported web browsers.</a>
+<a href="#1-unit-testing">1. Unit Testing</a>
+<a href="#2-integration-testing">2. Integration Testing</a>
+<a href="#3-system-testing">3. System Testing</a>
+<a href="#4-functional-testing">4. Functional Testing</a>
+<a href="#5-validation-testing">5. Validation Testing</a>
+<a href="#6-security-testing">6. Security Testing</a>
+<a href="#7-usability-testing">7. Usability Testing</a>
+<a href="#6-implementation-and-evaluation">6: IMPLEMENTATION AND EVALUATION</a>
+<a href="#1-user-module-this-module-allows-users-to-access-the-website-view-available-events-and-explore-event-details-such-as-date-time-venue-and-description">1. User Module: This module allows users to access the website, view available events, and explore event details such as date, time, venue, and description.</a>
+<a href="#2-registration-module-this-module-enables-users-to-register-for-selected-events-by-submitting-the-required-information-through-an-online-form">2. Registration Module: This module enables users to register for selected events by submitting the required information through an online form.</a>
+<a href="#3-admin-module-the-administrator-can-add-new-events-update-existing-event-details-delete-outdated-events-and-manage-user-registrations">3. Admin Module: The administrator can add new events, update existing event details, delete outdated events, and manage user registrations.</a>
+<a href="#4-event-management-module-this-module-maintains-event-information-including-event-name-category-date-venue-description-and-other-relevant-details">4. Event Management Module: This module maintains event information, including event name, category, date, venue, description, and other relevant details.</a>
+<a href="#5-database-module-this-module-stores-and-manages-user-details-event-information-and-registration-records-it-helps-retrieve-and-update-information-whenever-required">5. Database Module: This module stores and manages user details, event information, and registration records. It helps retrieve and update information whenever required.</a>
+<a href="#1-requirement-analysis-is-performed-to-identify-the-needs-of-users-and-administrators">1. Requirement analysis is performed to identify the needs of users and administrators.</a>
+<a href="#2-the-website-interface-is-designed-with-a-homepage-login-page-registration-page-and-event-listing-page">2. The website interface is designed with a homepage, login page, registration page, and event listing page.</a>
+<a href="#3-frontend-pages-are-developed-using-html-css-and-javascript">3. Frontend pages are developed using HTML, CSS, and JavaScript.</a>
+<a href="#4-backend-functionality-is-developed-to-process-user-requests-and-manage-event-details">4. Backend functionality is developed to process user requests and manage event details.</a>
+<a href="#5-the-database-is-created-to-store-event-user-and-registration-information">5. The database is created to store event, user, and registration information.</a>
+<a href="#6-all-modules-are-integrated-into-a-single-website">6. All modules are integrated into a single website.</a>
+<a href="#7-the-system-is-tested-to-identify-errors-and-verify-the-functionality-of-each-module">7. The system is tested to identify errors and verify the functionality of each module.</a>
+<a href="#8-the-completed-website-is-prepared-for-demonstration-or-deployment">8. The completed website is prepared for demonstration or deployment.</a>
+<a href="#1-it-reduces-manual-work-involved-in-event-management">1. It reduces manual work involved in event management.</a>
+<a href="#2-it-provides-centralized-access-to-event-information">2. It provides centralized access to event information.</a>
+<a href="#3-it-simplifies-the-event-registration-process">3. It simplifies the event registration process.</a>
+<a href="#4-it-improves-the-organization-of-event-records">4. It improves the organization of event records.</a>
+<a href="#5-it-allows-administrators-to-manage-event-information-more-conveniently">5. It allows administrators to manage event information more conveniently.</a>
+<a href="#6-it-provides-a-foundation-for-future-enhancements-such-as-online-payments-email-notifications-and-automated-booking-confirmations">6. It provides a foundation for future enhancements, such as online payments, email notifications, and automated booking confirmations.</a>
+<a href="#7-conclusion-and-future-enhancements">7: CONCLUSION AND FUTURE ENHANCEMENTS</a>
+<a href="#1-online-payment-integration">1. Online Payment Integration</a>
+<a href="#2-email-and-sms-notifications">2. Email and SMS Notifications</a>
+<a href="#3-mobile-application">3. Mobile Application</a>
+<a href="#4-advanced-search-and-filtering">4. Advanced Search and Filtering</a>
+<a href="#5-qr-code-based-entry-system">5. QR Code-Based Entry System</a>
+<a href="#6-feedback-and-rating-system">6. Feedback and Rating System</a>
+<a href="#7-improved-security">7. Improved Security</a>
+<a href="#8-reports-and-analytics">8. Reports and Analytics</a>
+<a href="#9-social-media-integration">9. Social Media Integration</a>
+<a href="#10-cloud-based-deployment">10. Cloud-Based Deployment</a></nav>
+<article>
+<h1 id="acknowledgement">ACKNOWLEDGEMENT</h1>
+<p>I would like to express my sincere gratitude to all those whose guidance and support were instrumental in the successful completion of this project. The encouragement and motivation I received from our teachers have been invaluable throughout the development of this mini project.</p>
+<p>We are deeply grateful to our respected Principal, Dr. Harshul Bachchhav, for providing us with the inspiration and encouragement necessary to complete this project successfully.</p>
+<p>We would like to express our heartfelt thanks to Mrs. Vaishali Khachane (H.O.D., Computer Science) for her valuable guidance, continuous support, and insightful suggestions throughout the development of this project. Her encouragement and expertise have played an important role in making this project successful and meaningful.</p>
+<p>We would also like to thank our internal guides and all the faculty members of the Department of Computer Science for their cooperation, valuable advice, and support. Their guidance has helped us improve our understanding of website development, database management, and the practical implementation of an Event Management System.</p>
+<p>This project aims to simplify the process of organizing and managing events by providing a convenient platform for event planning, registration, scheduling, and management. Working on this project has helped us enhance our technical knowledge, problem-solving abilities, and practical skills.</p>
+<p>Finally, we would like to thank our parents, friends, and everyone who directly or indirectly contributed to the successful completion of our mini project, “Event Management System.”</p>
+<h1 id="abstract">ABSTRACT</h1>
+<p>The Event Management System is a web-based application designed to simplify and organize the process of planning, managing, and conducting various events. Organizing an event manually can be time-consuming and difficult because it requires proper coordination, scheduling, registration, and management of event-related information. This project aims to overcome these challenges by providing a centralized online platform for efficient event management.</p>
+<p>The system allows users to view available events, access event details, register for events, and obtain relevant information easily. It also provides an administrator with facilities to add, update, delete, and manage event information, including event names, dates, venues, descriptions, and registrations. The system helps maintain event-related data in an organized manner and reduces paperwork and manual effort.</p>
+<p>The main objective of this project is to develop a user-friendly, reliable, and efficient platform that improves communication between event organizers and participants. The system can be developed using web technologies such as HTML, CSS, and JavaScript for the front end, PHP for server-side processing, and MySQL for database management, depending on the project requirements.</p>
+<p>The Event Management System provides a convenient solution for managing college functions, seminars, workshops, cultural programs, birthday parties, and other events. It helps save time, improve accuracy, and make event-related activities easier to manage.</p>
+<p>In conclusion, this mini project demonstrates how web technology can be used to automate event management activities and provide a more systematic, organized, and accessible approach to event planning and coordination.</p>
+<h1 id="1-introduction">1. INTRODUCTION</h1>
+<p>The Event Management System is a web-based application developed to make the process of planning, organizing, and managing events easier, faster, and more efficient. In today&#x27;s digital world, events such as college functions, seminars, workshops, cultural programs, birthday parties, weddings, and business meetings require proper planning and coordination. Managing these activities manually can be time-consuming and may lead to errors, confusion, and difficulties in maintaining records.</p>
+<p>The main purpose of the Event Management System is to provide a centralized platform where event organizers can manage event-related activities efficiently. The system helps organizers create events, update event details, manage schedules, maintain participant registrations, and provide important information about upcoming events. Users can view available events and access details such as event name, date, time, venue, and description.</p>
+<p>Traditional event management methods often involve paperwork, manual registration, and separate records for different activities. These methods can make it difficult to update information, track registrations, and coordinate with participants. The proposed system aims to reduce these problems by automating important event management tasks through a user-friendly website.</p>
+<p>The Event Management System can include two main types of users: Administrator and User. The administrator is responsible for managing event information, updating details, and monitoring registrations. Users can browse available events, view event information, and register for events according to the features provided by the application. The system can also use a database to store event details and registration records in an organized manner.</p>
+<p>The website can be developed using technologies such as HTML, CSS, and JavaScript for designing an interactive user interface, PHP for server-side processing, and MySQL for storing and managing data. These technologies help create a structured application that can be accessed through a web browser.</p>
+<p>The major objective of this project is to save time, reduce manual work, improve data accuracy, and make event organization more convenient. It also provides an opportunity to understand the practical implementation of web development, database connectivity, software design, and system management.</p>
+<p>In conclusion, the Event Management System is designed to provide a simple, organized, and efficient solution for managing events. It demonstrates how information technology can improve the planning and coordination of events while reducing the difficulties associated with traditional manual methods.</p>
+<h1 id="2-system-analysis">2. SYSTEM ANALYSIS</h1>
+<p>System analysis is an important phase in the development of the Event Management System. It involves studying the existing event management process, identifying its problems, and determining the requirements of the proposed system. The main purpose of system analysis is to understand how event-related activities can be managed efficiently with the help of a computerized system.</p>
+<p>The Event Management System is designed to simplify event planning, registration, scheduling, and information management. It provides a centralized platform for administrators and users to perform their respective activities efficiently.</p>
+<h2 id="22-existing-system">2.2 Existing System</h2>
+<p>In the existing system, event management activities are generally performed manually using paper records, registers, telephone calls, and spreadsheets. Event organizers maintain information about event schedules, venues, participants, and registrations separately.</p>
+<p>The manual system may work for small events, but it becomes difficult to manage when the number of events and participants increases. Updating information and maintaining accurate records can require considerable time and effort.</p>
+<p>Disadvantages of the Existing System</p>
+<p>- Time-consuming: Manual event planning and registration require significant time.</p>
+<p>- Paperwork: Maintaining physical records increases administrative work.</p>
+<p>- Data errors: Manual data entry may lead to mistakes and duplicate records.</p>
+<p>- Difficult record management: Searching, updating, and maintaining information can be challenging.</p>
+<p>- Communication problems: Participants may not receive updated event information on time.</p>
+<p>- Limited accessibility: Event information may not be available online whenever users need it.</p>
+<h2 id="23-proposed-system">2.3 Proposed System</h2>
+<p>The proposed Event Management System is a web-based application that helps users and administrators manage event-related activities through a single platform. It aims to reduce manual work and make event information easier to access and maintain.</p>
+<p>The administrator can add new events, update existing event details, delete events, and manage participant registrations. Users can view available events, check event details, and register for events through the website.</p>
+<p>The system stores information in a database, making it easier to retrieve and update event records. Its interface is designed to be simple and user-friendly.</p>
+<p>Advantages of the Proposed System</p>
+<p>- Reduces manual work and paperwork.</p>
+<p>- Provides centralized storage of event information.</p>
+<p>- Makes event details easily accessible.</p>
+<p>- Simplifies event registration and record maintenance.</p>
+<p>- Helps administrators update event information efficiently.</p>
+<p>- Improves the organization and management of events.</p>
+<p>- Reduces the possibility of manual errors.</p>
+<p>- Provides a convenient and user-friendly interface.</p>
+<h2 id="24-feasibility-study">2.4 Feasibility Study</h2>
+<p>A feasibility study determines whether the proposed system is practical and suitable for development. The Event Management System can be evaluated in the following areas.</p>
+<h1 id="1-technical-feasibility">1. Technical Feasibility</h1>
+<p>The system can be developed using commonly available web technologies such as HTML, CSS, JavaScript, PHP, and MySQL. These technologies support website development, server-side processing, and database management. The application can run on a computer with a suitable web server and database environment.</p>
+<h1 id="2-economic-feasibility">2. Economic Feasibility</h1>
+<p>The project is economically feasible because it can be developed using free and open-source technologies. Development and testing can be performed on an existing computer using software such as Visual Studio Code, XAMPP, and a web browser. Therefore, the overall development cost can be kept low.</p>
+<h1 id="3-operational-feasibility">3. Operational Feasibility</h1>
+<p>The system is designed to be easy to understand and operate. Users can browse events and register through the website, while administrators can manage event details using the administrative interface. Basic computer and internet knowledge is sufficient for using the application.</p>
+<h1 id="4-schedule-feasibility">4. Schedule Feasibility</h1>
+<p>The project can be completed within the time available for a mini project by dividing the work into stages such as requirement analysis, interface design, database development, coding, testing, and documentation.</p>
+<h2 id="25-functional-requirements">2.5 Functional Requirements</h2>
+<p>Functional requirements describe the main operations performed by the system.</p>
+<h1 id="1-user-registration-the-system-may-allow-new-users-to-create-an-account">1. User Registration: The system may allow new users to create an account.</h1>
+<h1 id="2-user-login-registered-users-can-log-in-using-their-credentials">2. User Login: Registered users can log in using their credentials.</h1>
+<h1 id="3-view-events-users-can-browse-available-events-and-their-details">3. View Events: Users can browse available events and their details.</h1>
+<h1 id="4-event-registration-users-can-register-for-selected-events">4. Event Registration: Users can register for selected events.</h1>
+<h1 id="5-event-management-administrators-can-add-edit-and-delete-event-details">5. Event Management: Administrators can add, edit, and delete event details.</h1>
+<h1 id="6-registration-management-administrators-can-view-and-manage-participant-registrations">6. Registration Management: Administrators can view and manage participant registrations.</h1>
+<h1 id="7-database-management-the-system-stores-and-retrieves-event-and-registration-information">7. Database Management: The system stores and retrieves event and registration information.</h1>
+<h1 id="8-logout-users-and-administrators-can-securely-end-their-sessions">8. Logout: Users and administrators can securely end their sessions.</h1>
+<h2 id="26-non-functional-requirements">2.6 Non-Functional Requirements</h2>
+<p>Non-functional requirements describe the quality and performance expected from the system.</p>
+<p>- Usability: The website should be simple and easy to navigate.</p>
+<p>- Performance: Pages and event information should load within a reasonable time.</p>
+<p>- Security: User credentials and administrative functions should be protected.</p>
+<p>- Reliability: The system should store and retrieve information accurately.</p>
+<p>- Maintainability: The application should be easy to modify and update.</p>
+<p>- Compatibility: The website should work with commonly used modern web browsers.</p>
+<p>- Availability: Users should be able to access the website whenever the hosting environment is available.</p>
+<h2 id="27-hardware-requirements">2.7 Hardware Requirements</h2>
+<p>The basic hardware requirements for developing and testing the project are:</p>
+<p>- Computer or laptop.</p>
+<p>- Minimum 4 GB RAM recommended.</p>
+<p>- Dual-core processor or better.</p>
+<p>- At least 10 GB of available storage.</p>
+<p>- Keyboard and mouse.</p>
+<p>- Internet connection for online deployment or accessing hosted resources.</p>
+<h2 id="28-software-requirements">2.8 Software Requirements</h2>
+<p>The software requirements may include:</p>
+<p>- Operating System: Windows or Linux.</p>
+<p>- Front-End Technologies: HTML, CSS, and JavaScript.</p>
+<p>- Back-End Technology: PHP.</p>
+<p>- Database: MySQL.</p>
+<p>- Development Environment: Visual Studio Code.</p>
+<p>- Local Server: XAMPP or another compatible PHP server.</p>
+<p>- Web Browser: Google Chrome, Microsoft Edge, or Mozilla Firefox.</p>
+<p>Note: These are suggested technologies. The final requirements should match the actual implementation of the project.</p>
+<h2 id="29-system-users">2.9 System Users</h2>
+<p>The proposed system has two primary user roles.</p>
+<p>Administrator</p>
+<p>The administrator manages the website and its event-related information. The main responsibilities include adding events, updating event schedules, deleting outdated events, and monitoring participant registrations.</p>
+<p>User</p>
+<p>The user can access the website to view available events, read event details, and register for selected events if registration functionality is provided.</p>
+<h2 id="210-conclusion">2.10 Conclusion</h2>
+<p>System analysis helps identify the limitations of the existing manual process and define the requirements of the proposed Event Management System. The proposed web-based application aims to simplify event planning, improve record management, reduce foundation for the next stages of system design, implementation, and testing.paperwork,and provide convenient access to event information. The analysis provides a foundation for the next stages of system design, implementation, and testing.</p>
+<h1 id="3-system-requirements">3. SYSTEM REQUIREMENTS</h1>
+<p>System requirements specify the hardware and software needed to develop, run, and maintain the Event Management System. These requirements help ensure that the application works properly and provides a user-friendly environment for event organizers and participants.</p>
+<p>The Event Management System is a web-based application that allows users to view event details and register for events, while administrators can manage event information and participant records. The system requires suitable hardware, software, a web browser, and a database environment.</p>
+<h2 id="32-hardware-requirements">3.2 Hardware Requirements</h2>
+<p>Hardware requirements describe the physical equipment needed to develop and operate the system.</p>
+<p>The minimum recommended hardware requirements are:</p>
+<p>Hardware Component| Minimum Requirement</p>
+<p>Processor| Dual-Core Processor</p>
+<p>RAM| 4 GB</p>
+<p>Hard Disk| 10 GB free space</p>
+<p>Monitor| Standard display</p>
+<p>Keyboard| Standard keyboard</p>
+<p>Mouse| Standard mouse</p>
+<p>Network| Internet or local network connection</p>
+<p>These specifications are sufficient for basic development and testing of the mini project. More powerful hardware may be required for larger applications or many simultaneous users.</p>
+<h2 id="33-software-requirements">3.3 Software Requirements</h2>
+<p>Software requirements describe the programs and technologies used to develop and run the application.</p>
+<p>Software Component| Requirement</p>
+<p>Operating System| Windows or Linux</p>
+<p>Front-End| HTML, CSS, JavaScript</p>
+<p>Back-End| PHP</p>
+<p>Database| MySQL</p>
+<p>Web Server| Apache</p>
+<p>Development Tool| Visual Studio Code</p>
+<p>Local Server Environment| XAMPP</p>
+<p>Web Browser| Google Chrome, Mozilla Firefox, or Microsoft Edge</p>
+<p>The selected technologies support the development of the website, processing of user requests, and storage of event-related information.</p>
+<h2 id="34-functional-requirements">3.4 Functional Requirements</h2>
+<p>Functional requirements define the operations that the Event Management System must perform.</p>
+<h1 id="1-user-registration-allow-users-to-create-an-account-if-registration-is-implemented">1. User Registration: Allow users to create an account if registration is implemented.</h1>
+<h1 id="2-user-login-provide-login-functionality-for-registered-users">2. User Login: Provide login functionality for registered users.</h1>
+<h1 id="3-view-events-display-available-events-with-their-names-dates-times-venues-and-descriptions">3. View Events: Display available events with their names, dates, times, venues, and descriptions.</h1>
+<h1 id="4-event-registration-allow-users-to-register-for-selected-events">4. Event Registration: Allow users to register for selected events.</h1>
+<h1 id="5-add-events-allow-the-administrator-to-add-new-events">5. Add Events: Allow the administrator to add new events.</h1>
+<h1 id="6-update-events-allow-the-administrator-to-modify-event-information">6. Update Events: Allow the administrator to modify event information.</h1>
+<h1 id="7-delete-events-allow-the-administrator-to-remove-events-when-necessary">7. Delete Events: Allow the administrator to remove events when necessary.</h1>
+<h1 id="8-manage-registrations-enable-the-administrator-to-view-participant-registration-details">8. Manage Registrations: Enable the administrator to view participant registration details.</h1>
+<h1 id="9-database-operations-store-retrieve-and-update-event-and-registration-records">9. Database Operations: Store, retrieve, and update event and registration records.</h1>
+<h1 id="10-logout-allow-authenticated-users-and-administrators-to-end-their-sessions">10. Logout: Allow authenticated users and administrators to end their sessions.</h1>
+<h2 id="35-non-functional-requirements">3.5 Non-Functional Requirements</h2>
+<p>Non-functional requirements describe the expected quality and performance of the system.</p>
+<p>- Usability: The website should be simple and easy to use.</p>
+<p>- Performance: Event information should load within a reasonable time.</p>
+<p>- Security: Login credentials and administrative access should be protected.</p>
+<p>- Reliability: The system should store and retrieve data accurately.</p>
+<p>- Maintainability: The application should be easy to modify and maintain.</p>
+<p>- Compatibility: The website should work with commonly used web browsers.</p>
+<p>- Availability: The system should be accessible whenever the server is running and available.</p>
+<h2 id="36-database-requirements">3.6 Database Requirements</h2>
+<p>The database stores and organizes the information required by the application. MySQL can be used to maintain the following tables:</p>
+<h1 id="1-user-table">1. User Table</h1>
+<p>- User ID</p>
+<p>- Name</p>
+<p>- Email</p>
+<p>- Password (stored securely as a hash)</p>
+<p>- Contact Number</p>
+<h1 id="2-event-table">2. Event Table</h1>
+<p>- Event ID</p>
+<p>- Event Name</p>
+<p>- Event Description</p>
+<p>- Event Date</p>
+<p>- Event Time</p>
+<p>- Event Venue</p>
+<p>- Organizer Details</p>
+<h1 id="3-registration-table">3. Registration Table</h1>
+<p>- Registration ID</p>
+<p>- User ID</p>
+<p>- Event ID</p>
+<p>- Registration Date</p>
+<p>- Registration Status</p>
+<p>These tables help maintain relationships between users, events, and registrations. The final database structure should match the features implemented in the application.</p>
+<h2 id="37-network-requirements">3.7 Network Requirements</h2>
+<p>The application can run on a local computer using a local server environment such as XAMPP. A local network or internet connection may be required depending on how the website is deployed and accessed.</p>
+<p>For online deployment, a suitable web hosting service, a configured server, and database connectivity are required. Users need an internet connection to access a remotely hosted website.</p>
+<h2 id="38-security-requirements">3.8 Security Requirements</h2>
+<p>The system should provide basic security to protect user information and event records.</p>
+<p>- Validate user input before processing it.</p>
+<p>- Store passwords using secure password hashing.</p>
+<p>- Restrict administrative functions to authorized administrators.</p>
+<p>- Use secure database queries to help prevent SQL injection.</p>
+<p>- Protect authenticated sessions.</p>
+<p>- Use HTTPS when the website is deployed online.</p>
+<h2 id="39-conclusion">3.9 Conclusion</h2>
+<p>The system requirements define the hardware, software, database, network, and security facilities needed to develop and operate the Event Management System. The proposed technologies provide a practical and cost-effective foundation for a mini project. Meeting these requirements helps ensure that the application is functional, reliable, secure, and easy to use.</p>
+<h1 id="4-system-design">4. SYSTEM DESIGN</h1>
+<p>System design is an important phase in the development of the Event Management System. It describes the overall structure of the system, its components, database organization, user interactions, and the flow of information between different modules.</p>
+<p>The main purpose of system design is to develop a clear structure for the application before implementation. The Event Management System is designed as a web-based application that helps users view events and register for them, while administrators manage event details and participant registrations.</p>
+<p>The system design includes system architecture, data flow diagrams, use case diagrams, database design, and module descriptions.</p>
+<h2 id="42-system-architecture">4.2 System Architecture</h2>
+<p>The Event Management System follows a three-layer architecture.</p>
+<h1 id="1-presentation-layer">1. Presentation Layer</h1>
+<p>This layer provides the user interface through which users and administrators interact with the website. It includes web pages such as the home page, event listing page, registration page, login page, and admin dashboard.</p>
+<p>Technologies: HTML, CSS, JavaScript.</p>
+<h1 id="2-application-layer">2. Application Layer</h1>
+<p>This layer processes user requests, validates input, manages event-related operations, and communicates with the database. It handles activities such as adding events, updating event information, and processing registrations.</p>
+<p>Technology: PHP.</p>
+<h1 id="3-database-layer">3. Database Layer</h1>
+<p>This layer stores and manages information related to users, events, and registrations.</p>
+<p>Technology: MySQL.</p>
+<p>Architecture Diagram</p>
+<p>&lt;box border radius=&quot;lg&quot; padding={3} gap={2} align=&quot;center&quot;&gt;</p>
+<p>&lt;box background=&quot;#E3EEFF&quot; theme=&quot;light&quot; radius=&quot;md&quot; padding={3} width=&quot;85%&quot; align=&quot;center&quot;&gt;</p>
+<p>**Presentation Layer**&lt;text textAlign=&quot;center&quot; size=&quot;sm&quot;&gt;User / Administrator&lt;/text&gt;</p>
+<p>&lt;text textAlign=&quot;center&quot; size=&quot;sm&quot;&gt;HTML, CSS, JavaScript&lt;/text&gt;</p>
+<p>&lt;/box&gt;</p>
+<p>&lt;icon name=&quot;arrow-down-up&quot; size=&quot;xl&quot;/&gt;</p>
+<p>&lt;box background=&quot;#E2F4E8&quot; theme=&quot;light&quot; radius=&quot;md&quot; padding={3} width=&quot;85%&quot; align=&quot;center&quot;&gt;</p>
+<p>**Application Layer**&lt;text textAlign=&quot;center&quot; size=&quot;sm&quot;&gt;Business Logic and Request Processing&lt;/text&gt;</p>
+<p>&lt;text textAlign=&quot;center&quot; size=&quot;sm&quot;&gt;PHP&lt;/text&gt;</p>
+<p>&lt;/box&gt;</p>
+<p>&lt;icon name=&quot;arrow-down-up&quot; size=&quot;xl&quot;/&gt;</p>
+<p>&lt;box background=&quot;#FBEAD7&quot; theme=&quot;light&quot; radius=&quot;md&quot; padding={3} width=&quot;85%&quot; align=&quot;center&quot;&gt;</p>
+<p>**Database Layer**&lt;text textAlign=&quot;center&quot; size=&quot;sm&quot;&gt;Users, Events, Registrations&lt;/text&gt;</p>
+<p>&lt;text textAlign=&quot;center&quot; size=&quot;sm&quot;&gt;MySQL&lt;/text&gt;</p>
+<p>&lt;/box&gt;</p>
+<p>&lt;caption&gt;Figure 4.1: System Architecture of Event Management System&lt;/caption&gt;</p>
+<p>&lt;/box&gt;4.3 Data Flow Diagram (DFD)</p>
+<p>A Data Flow Diagram represents the movement of information between users, processes, and the database.</p>
+<p>Level 0 DFD – Context Diagram</p>
+<p>The entire Event Management System is represented as a single process.</p>
+<p>&lt;box border radius=&quot;lg&quot; padding={3} align=&quot;center&quot; gap={3}&gt;</p>
+<p>&lt;box border radius=&quot;md&quot; padding={3} width=&quot;42%&quot; align=&quot;center&quot;&gt;</p>
+<p>**User**&lt;text size=&quot;sm&quot; textAlign=&quot;center&quot;&gt;Event search and registration details&lt;/text&gt;</p>
+<p>&lt;/box&gt;</p>
+<p>&lt;icon name=&quot;arrow-down-up&quot; size=&quot;lg&quot;/&gt;</p>
+<p>&lt;box background=&quot;#E3EEFF&quot; theme=&quot;light&quot; radius=&quot;full&quot; padding={4} align=&quot;center&quot; width=&quot;70%&quot;&gt;</p>
+<p>**Event Management System**</p>
+<p>&lt;/box&gt;</p>
+<p>&lt;icon name=&quot;arrow-down-up&quot; size=&quot;lg&quot;/&gt;</p>
+<p>&lt;box border radius=&quot;md&quot; padding={3} width=&quot;42%&quot; align=&quot;center&quot;&gt;</p>
+<p>**Administrator**&lt;text size=&quot;sm&quot; textAlign=&quot;center&quot;&gt;Event and registration management&lt;/text&gt;</p>
+<p>&lt;/box&gt;</p>
+<p>&lt;caption&gt;Figure 4.2: Level 0 Data Flow Diagram&lt;/caption&gt;</p>
+<p>&lt;/box&gt;The user sends requests to view and register for events. The administrator provides event information and manages registrations. The system processes these requests and returns the appropriate information.</p>
+<p>Level 1 DFD</p>
+<p>The system can be divided into the following processes:</p>
+<h1 id="1-user-management-handles-user-registration-and-login">1. User Management: Handles user registration and login.</h1>
+<h1 id="2-event-management-adds-updates-deletes-and-displays-event-information">2. Event Management: Adds, updates, deletes, and displays event information.</h1>
+<h1 id="3-registration-management-processes-and-maintains-event-registrations">3. Registration Management: Processes and maintains event registrations.</h1>
+<h1 id="4-database-management-stores-and-retrieves-user-event-and-registration-records">4. Database Management: Stores and retrieves user, event, and registration records.</h1>
+<p>&lt;box border radius=&quot;lg&quot; padding={3} gap={2} align=&quot;center&quot;&gt;</p>
+<p>&lt;box border radius=&quot;md&quot; padding={2} width=&quot;75%&quot; align=&quot;center&quot;&gt;</p>
+<p>**User / Administrator**</p>
+<p>&lt;/box&gt;</p>
+<p>&lt;icon name=&quot;arrow-down&quot; size=&quot;lg&quot;/&gt;</p>
+<p>&lt;box background=&quot;#E3EEFF&quot; theme=&quot;light&quot; radius=&quot;md&quot; padding={3} width=&quot;90%&quot; align=&quot;center&quot;&gt;</p>
+<p>**1. User Management**</p>
+<p>&lt;/box&gt;</p>
+<p>&lt;box background=&quot;#E2F4E8&quot; theme=&quot;light&quot; radius=&quot;md&quot; padding={3} width=&quot;90%&quot; align=&quot;center&quot;&gt;</p>
+<p>**2. Event Management**</p>
+<p>&lt;/box&gt;</p>
+<p>&lt;box background=&quot;#FBEAD7&quot; theme=&quot;light&quot; radius=&quot;md&quot; padding={3} width=&quot;90%&quot; align=&quot;center&quot;&gt;</p>
+<p>**3. Registration Management**</p>
+<p>&lt;/box&gt;</p>
+<p>&lt;icon name=&quot;arrow-down-up&quot; size=&quot;lg&quot;/&gt;</p>
+<p>&lt;box border radius=&quot;md&quot; padding={3} width=&quot;80%&quot; align=&quot;center&quot;&gt;</p>
+<p>**4. MySQL Database**</p>
+<p>&lt;/box&gt;</p>
+<p>&lt;caption&gt;Figure 4.3: Level 1 Data Flow Diagram&lt;/caption&gt;</p>
+<p>&lt;/box&gt;4.4 Use Case Diagram</p>
+<p>A use case diagram shows the interaction between the system and its users.</p>
+<p>Actors</p>
+<p>- Administrator: Manages events and registrations.</p>
+<p>- User: Views events and registers for events.</p>
+<p>Main Use Cases</p>
+<p>Administrator| User</p>
+<p>Login| Register an account</p>
+<p>Add an event| Login</p>
+<p>Update event details| View available events</p>
+<p>Delete an event| View event details</p>
+<p>View registrations| Register for an event</p>
+<p>Manage registrations| Logout</p>
+<p>The use case diagram helps identify the responsibilities of each actor and the main functions of the application.</p>
+<h2 id="45-database-design">4.5 Database Design</h2>
+<p>Database design defines how information is organized and stored. MySQL can be used to maintain the data required by the Event Management System.</p>
+<h1 id="1-user-table-2">1. User Table</h1>
+<p>Field Name| Data Type| Description</p>
+<p>user_id| INT| Primary key</p>
+<p>name| VARCHAR(100)| User name</p>
+<p>email| VARCHAR(100)| User email</p>
+<p>password| VARCHAR(255)| Hashed password</p>
+<p>phone| VARCHAR(15)| Contact number</p>
+<h1 id="2-event-table-2">2. Event Table</h1>
+<p>Field Name| Data Type| Description</p>
+<p>event_id| INT| Primary key</p>
+<p>event_name| VARCHAR(150)| Event name</p>
+<p>description| TEXT| Event details</p>
+<p>event_date| DATE| Event date</p>
+<p>event_time| TIME| Event time</p>
+<p>venue| VARCHAR(200)| Event location</p>
+<p>organizer| VARCHAR(100)| Organizer name</p>
+<h1 id="3-registration-table-2">3. Registration Table</h1>
+<p>Field Name| Data Type| Description</p>
+<p>registration_id| INT| Primary key</p>
+<p>user_id| INT| Foreign key</p>
+<p>event_id| INT| Foreign key</p>
+<p>registration_date| DATE| Date of registration</p>
+<p>status| VARCHAR(30)| Registration status</p>
+<p>The &quot;user_id&quot; and &quot;event_id&quot; fields in the Registration table link registrations to the corresponding users and events. These relationships help maintain data consistency and simplify retrieval.</p>
+<h2 id="46-module-design">4.6 Module Design</h2>
+<p>The Event Management System consists of the following modules.</p>
+<h1 id="1-user-module">1. User Module</h1>
+<p>This module allows users to create accounts, log in, browse available events, and access relevant event information.</p>
+<h1 id="2-administrator-module">2. Administrator Module</h1>
+<p>This module allows the administrator to log in to the administrative area and manage event details and participant records.</p>
+<h1 id="3-event-management-module">3. Event Management Module</h1>
+<p>This module handles the creation, modification, deletion, and display of events. It maintains information such as event name, date, time, venue, and description.</p>
+<h1 id="4-event-registration-module">4. Event Registration Module</h1>
+<p>This module allows users to register for selected events and stores registration details in the database.</p>
+<h1 id="5-database-module">5. Database Module</h1>
+<p>This module manages the storage, retrieval, updating, and deletion of records associated with users, events, and registrations.</p>
+<h2 id="47-input-design">4.7 Input Design</h2>
+<p>Input design defines the information entered by users and administrators.</p>
+<p>The system may include the following input forms:</p>
+<p>- Registration Form: Name, email, password, and contact number.</p>
+<p>- Login Form: Email and password.</p>
+<p>- Event Form: Event name, description, date, time, venue, and organizer.</p>
+<p>- Event Registration Form: User and selected event information.</p>
+<p>The input forms should validate required fields and reject invalid data before storing it in the database.</p>
+<h2 id="48-output-design">4.8 Output Design</h2>
+<p>Output design describes the information displayed by the system after processing requests.</p>
+<p>The main outputs include:</p>
+<p>- Home page displaying available events.</p>
+<p>- Event details showing date, time, venue, and description.</p>
+<p>- Registration confirmation or status.</p>
+<p>- Administrator dashboard showing event information.</p>
+<p>- Participant registration records.</p>
+<p>The outputs should be clear, accurate, and easy to understand.</p>
+<h2 id="49-security-design">4.9 Security Design</h2>
+<p>Security design protects user information and administrative operations.</p>
+<p>The system should use password hashing, input validation, secure database queries, session management, and role-based access control. Only authorized administrators should be able to modify event information or access administrative functions.</p>
+<p>If the website is hosted online, HTTPS should be enabled to protect information transmitted between the browser and the server.</p>
+<h2 id="410-conclusion">4.10 Conclusion</h2>
+<p>The system design provides a blueprint for developing the Event Management System. It explains the architecture, data flow, use cases, database structure, modules, input and output design, and security measures. This design helps organize the development process and provides a foundation for implementation and testing of the mini project.</p>
+<h1 id="5-system-testing">5. SYSTEM TESTING</h1>
+<p>System testing is an important phase of the Software Development Life Cycle (SDLC). It is performed to verify that the developed application works according to the specified requirements. The main purpose of testing is to identify errors, check system functionality, and ensure that the application performs correctly under different conditions.</p>
+<p>The Event Management System is tested to verify that users can view events, register for events, and access event information, while administrators can add, update, delete, and manage event details and participant registrations.</p>
+<p>Testing helps ensure that the website is reliable, user-friendly, secure, and capable of handling the main operations required for event management.</p>
+<h2 id="52-objectives-of-testing">5.2 Objectives of Testing</h2>
+<p>The main objectives of testing the Event Management System are:</p>
+<h1 id="1-to-verify-that-all-modules-work-correctly">1. To verify that all modules work correctly.</h1>
+<h1 id="2-to-identify-and-remove-errors-in-the-application">2. To identify and remove errors in the application.</h1>
+<h1 id="3-to-check-the-accuracy-of-data-stored-in-the-database">3. To check the accuracy of data stored in the database.</h1>
+<h1 id="4-to-verify-user-registration-and-login-functionality">4. To verify user registration and login functionality.</h1>
+<h1 id="5-to-test-event-creation-updating-and-deletion">5. To test event creation, updating, and deletion.</h1>
+<h1 id="6-to-verify-event-registration-and-registration-records">6. To verify event registration and registration records.</h1>
+<h1 id="7-to-check-input-validation-and-error-messages">7. To check input validation and error messages.</h1>
+<h1 id="8-to-ensure-that-unauthorized-users-cannot-access-administrative-functions">8. To ensure that unauthorized users cannot access administrative functions.</h1>
+<h1 id="9-to-verify-that-the-website-works-properly-in-supported-web-browsers">9. To verify that the website works properly in supported web browsers.</h1>
+<h2 id="53-types-of-testing">5.3 Types of Testing</h2>
+<h1 id="1-unit-testing">1. Unit Testing</h1>
+<p>Unit testing checks individual components of the application separately. Each module is tested to ensure that it performs its intended function.</p>
+<p>For example, the login module is tested to verify that valid credentials are accepted and invalid credentials are rejected. Similarly, the event management module is tested to check whether event details can be added and updated correctly.</p>
+<h1 id="2-integration-testing">2. Integration Testing</h1>
+<p>Integration testing checks whether different modules work correctly when connected.</p>
+<p>In the Event Management System, integration testing verifies communication between the user interface, PHP application logic, and MySQL database. It also checks whether event registration details are correctly stored and associated with the appropriate users and events.</p>
+<h1 id="3-system-testing">3. System Testing</h1>
+<p>System testing evaluates the complete application as a whole. The website is tested against the project requirements to ensure that the major functions work together correctly.</p>
+<p>It includes testing login, event viewing, event management, registration, database operations, and navigation between web pages.</p>
+<h1 id="4-functional-testing">4. Functional Testing</h1>
+<p>Functional testing verifies whether each feature performs according to its requirements.</p>
+<p>The main functions tested include:</p>
+<p>- User registration and login.</p>
+<p>- Displaying available events.</p>
+<p>- Viewing event details.</p>
+<p>- Adding, updating, and deleting events.</p>
+<p>- Registering for an event.</p>
+<p>- Viewing participant registration records.</p>
+<p>- Logging out of the application.</p>
+<h1 id="5-validation-testing">5. Validation Testing</h1>
+<p>Validation testing checks whether the system accepts valid information and rejects invalid or incomplete input.</p>
+<p>For example, the system should validate email formats, required fields, event dates, and login credentials before processing the information.</p>
+<h1 id="6-security-testing">6. Security Testing</h1>
+<p>Security testing checks whether the application protects user information and administrative operations. It includes testing authentication, session handling, input validation, and access restrictions for administrative functions.</p>
+<h1 id="7-usability-testing">7. Usability Testing</h1>
+<p>Usability testing checks whether users can navigate and operate the website easily. The interface should be clear, consistent, and understandable for both users and administrators.</p>
+<h2 id="54-test-cases">5.4 Test Cases</h2>
+<p>The following test cases can be used to evaluate the Event Management System.</p>
+<p>Test Case ID| Test Scenario| Expected Result</p>
+<p>TC01| Open the website| Home page should display correctly</p>
+<p>TC02| Enter valid login credentials| User should log in successfully</p>
+<p>TC03| Enter invalid login credentials| Appropriate error message should appear</p>
+<p>TC04| Submit an incomplete registration form| Validation message should appear</p>
+<p>TC05| View available events| Event details should be displayed</p>
+<p>TC06| Add an event as administrator| Event should be saved successfully</p>
+<p>TC07| Update existing event details| Updated information should be displayed</p>
+<p>TC08| Delete an event as administrator| Event should be removed according to system rules</p>
+<p>TC09| Register for an available event| Registration should be recorded</p>
+<p>TC10| View participant registrations| Relevant registration records should be displayed</p>
+<p>TC11| Access an admin page without authorization| Access should be denied</p>
+<p>TC12| Log out of the application| User session should end</p>
+<p>Note: These are proposed test cases. Actual results should be recorded after executing the tests on the developed website.</p>
+<h2 id="55-sample-test-execution-report">5.5 Sample Test Execution Report</h2>
+<p>Test Case ID| Actual Result| Status</p>
+<p>TC01| To be recorded during testing| Pending</p>
+<p>TC02| To be recorded during testing| Pending</p>
+<p>TC03| To be recorded during testing| Pending</p>
+<p>TC04| To be recorded during testing| Pending</p>
+<p>TC05| To be recorded during testing| Pending</p>
+<p>TC06| To be recorded during testing| Pending</p>
+<p>TC07| To be recorded during testing| Pending</p>
+<p>TC08| To be recorded during testing| Pending</p>
+<p>TC09| To be recorded during testing| Pending</p>
+<p>TC10| To be recorded during testing| Pending</p>
+<p>TC11| To be recorded during testing| Pending</p>
+<p>TC12| To be recorded during testing| Pending</p>
+<p>After executing each test case, its actual result should be entered and its status changed to Pass or Fail as appropriate.</p>
+<h2 id="56-error-handling">5.6 Error Handling</h2>
+<p>Error handling ensures that the system responds appropriately when invalid input or unexpected conditions occur.</p>
+<p>The Event Management System should provide suitable error messages for situations such as:</p>
+<p>- Incorrect login credentials.</p>
+<p>- Missing mandatory fields.</p>
+<p>- Invalid email addresses.</p>
+<p>- Database connection failures.</p>
+<p>- Duplicate event registrations, if duplicate registration is restricted.</p>
+<p>- Unauthorized access to administrative pages.</p>
+<p>- Invalid or unavailable event details.</p>
+<p>These messages help users understand the problem and allow them to correct their input when possible.</p>
+<h2 id="57-testing-environment">5.7 Testing Environment</h2>
+<p>The following environment can be used for testing the mini project:</p>
+<p>Component| Testing Environment</p>
+<p>Operating System| Windows or Linux</p>
+<p>Front-End| HTML, CSS, JavaScript</p>
+<p>Back-End| PHP</p>
+<p>Database| MySQL</p>
+<p>Web Server| Apache</p>
+<p>Local Server| XAMPP</p>
+<p>Browser| Google Chrome or Mozilla Firefox</p>
+<p>The testing environment should be configured according to the technologies used in the actual implementation.</p>
+<h2 id="58-expected-testing-outcome">5.8 Expected Testing Outcome</h2>
+<p>After successful execution of all test cases, the system should:</p>
+<p>- Display event information correctly.</p>
+<p>- Accept valid user input.</p>
+<p>- Reject invalid or incomplete information.</p>
+<p>- Store and retrieve database records accurately.</p>
+<p>- Allow administrators to manage events.</p>
+<p>- Record participant registrations correctly.</p>
+<p>- Prevent unauthorized access to protected functions.</p>
+<p>- Provide clear messages and easy navigation.</p>
+<p>These are the expected outcomes and should be confirmed through actual testing.</p>
+<h2 id="59-conclusion">5.9 Conclusion</h2>
+<p>System testing is essential for ensuring the quality and reliability of the Event Management System. Different testing techniques help identify errors, verify individual modules, check database integration, and evaluate the complete application.</p>
+<p>By executing the defined test cases and correcting identified defects, the application can be improved in terms of functionality, security, accuracy, and usability. Successful testing provides confidence that the developed system meets its specified requirements and is suitable for its intended purpose.</p>
+<h1 id="6-implementation-and-evaluation">6: IMPLEMENTATION AND EVALUATION</h1>
+<p>The implementation phase is an important stage in the development of the Event Management System. In this phase, the system design is converted into a functional website. The main objective of the system is to simplify event planning, registration, and management through an online platform.</p>
+<p>The Event Management System allows users to view upcoming events, check event details, and register for their preferred events. The administrator can manage event information, monitor registrations, and maintain records efficiently. The system reduces paperwork, saves time, and improves the accuracy of event management activities.</p>
+<h3 id="611-implementation-modules">6.1.1 Implementation Modules</h3>
+<h1 id="1-user-module-this-module-allows-users-to-access-the-website-view-available-events-and-explore-event-details-such-as-date-time-venue-and-description">1. User Module: This module allows users to access the website, view available events, and explore event details such as date, time, venue, and description.</h1>
+<h1 id="2-registration-module-this-module-enables-users-to-register-for-selected-events-by-submitting-the-required-information-through-an-online-form">2. Registration Module: This module enables users to register for selected events by submitting the required information through an online form.</h1>
+<h1 id="3-admin-module-the-administrator-can-add-new-events-update-existing-event-details-delete-outdated-events-and-manage-user-registrations">3. Admin Module: The administrator can add new events, update existing event details, delete outdated events, and manage user registrations.</h1>
+<h1 id="4-event-management-module-this-module-maintains-event-information-including-event-name-category-date-venue-description-and-other-relevant-details">4. Event Management Module: This module maintains event information, including event name, category, date, venue, description, and other relevant details.</h1>
+<h1 id="5-database-module-this-module-stores-and-manages-user-details-event-information-and-registration-records-it-helps-retrieve-and-update-information-whenever-required">5. Database Module: This module stores and manages user details, event information, and registration records. It helps retrieve and update information whenever required.</h1>
+<h3 id="612-technologies-used">6.1.2 Technologies Used</h3>
+<p>The following technologies can be used to implement the Event Management System:</p>
+<p>- HTML: Used to create the structure of web pages.</p>
+<p>- CSS: Used to design the website and improve its appearance.</p>
+<p>- JavaScript: Used to add interactive features and validate user input.</p>
+<p>- PHP: Used to process user requests and connect the website to the database.</p>
+<p>- MySQL: Used to store user information, event details, and registration records.</p>
+<p>These technologies are suitable for a basic web-based mini project. The final report should mention the technologies actually used in the developed website.</p>
+<h3 id="613-implementation-process">6.1.3 Implementation Process</h3>
+<p>The system is implemented through the following steps:</p>
+<h1 id="1-requirement-analysis-is-performed-to-identify-the-needs-of-users-and-administrators">1. Requirement analysis is performed to identify the needs of users and administrators.</h1>
+<h1 id="2-the-website-interface-is-designed-with-a-homepage-login-page-registration-page-and-event-listing-page">2. The website interface is designed with a homepage, login page, registration page, and event listing page.</h1>
+<h1 id="3-frontend-pages-are-developed-using-html-css-and-javascript">3. Frontend pages are developed using HTML, CSS, and JavaScript.</h1>
+<h1 id="4-backend-functionality-is-developed-to-process-user-requests-and-manage-event-details">4. Backend functionality is developed to process user requests and manage event details.</h1>
+<h1 id="5-the-database-is-created-to-store-event-user-and-registration-information">5. The database is created to store event, user, and registration information.</h1>
+<h1 id="6-all-modules-are-integrated-into-a-single-website">6. All modules are integrated into a single website.</h1>
+<h1 id="7-the-system-is-tested-to-identify-errors-and-verify-the-functionality-of-each-module">7. The system is tested to identify errors and verify the functionality of each module.</h1>
+<h1 id="8-the-completed-website-is-prepared-for-demonstration-or-deployment">8. The completed website is prepared for demonstration or deployment.</h1>
+<h2 id="62-system-evaluation">6.2 System Evaluation</h2>
+<p>System evaluation is the process of checking whether the developed Event Management System meets its objectives and requirements. It determines whether the website works correctly, is easy to use, and manages event-related information efficiently.</p>
+<p>The system is evaluated based on functionality, usability, reliability, performance, and data management.</p>
+<h3 id="621-functional-evaluation">6.2.1 Functional Evaluation</h3>
+<p>The functional evaluation checks whether the main features of the system operate as expected.</p>
+<p>- The homepage displays relevant event information.</p>
+<p>- Users can access the available event listings.</p>
+<p>- Event details are displayed correctly.</p>
+<p>- Users can submit event registration forms.</p>
+<p>- The administrator can manage event information.</p>
+<p>- Registration records can be stored and retrieved when database functionality is implemented.</p>
+<h3 id="622-usability-evaluation">6.2.2 Usability Evaluation</h3>
+<p>The usability evaluation checks whether users can operate the website easily. The interface should be simple, understandable, and easy to navigate. Important options, such as viewing events and registering for events, should be clearly visible.</p>
+<p>A user-friendly interface reduces confusion and helps users complete tasks with minimal effort.</p>
+<h3 id="623-performance-evaluation">6.2.3 Performance Evaluation</h3>
+<p>Performance evaluation checks how efficiently the website responds to user actions. Pages should load within a reasonable time, and event information should be displayed without unnecessary delays. Database operations should also be performed efficiently.</p>
+<h3 id="624-reliability-evaluation">6.2.4 Reliability Evaluation</h3>
+<p>Reliability evaluation determines whether the system performs consistently during normal use. The website should handle valid user inputs correctly and display appropriate error messages for invalid or incomplete information.</p>
+<h3 id="625-security-evaluation">6.2.5 Security Evaluation</h3>
+<p>Security evaluation checks whether user information and administrative functions are appropriately protected. Login authentication, input validation, secure password storage, and access control should be implemented wherever applicable.</p>
+<h2 id="63-test-results-and-evaluation">6.3 Test Results and Evaluation</h2>
+<p>The following table presents sample functional test cases for evaluating the Event Management System. These are expected results; actual results should be recorded after testing the developed website.</p>
+<p>Test Case| Expected Result</p>
+<p>Open the homepage| Homepage displays correctly</p>
+<p>View available events| Event list is displayed</p>
+<p>Open event details| Correct event information is shown</p>
+<p>Submit a valid registration form| Registration is processed</p>
+<p>Submit an incomplete form| Validation message is displayed</p>
+<p>Add or update an event as admin| Event information is updated</p>
+<p>Access an admin page without authorization| Access is denied</p>
+<h2 id="64-advantages-identified-during-evaluation">6.4 Advantages Identified During Evaluation</h2>
+<p>The evaluation of the proposed system highlights the following benefits:</p>
+<h1 id="1-it-reduces-manual-work-involved-in-event-management">1. It reduces manual work involved in event management.</h1>
+<h1 id="2-it-provides-centralized-access-to-event-information">2. It provides centralized access to event information.</h1>
+<h1 id="3-it-simplifies-the-event-registration-process">3. It simplifies the event registration process.</h1>
+<h1 id="4-it-improves-the-organization-of-event-records">4. It improves the organization of event records.</h1>
+<h1 id="5-it-allows-administrators-to-manage-event-information-more-conveniently">5. It allows administrators to manage event information more conveniently.</h1>
+<h1 id="6-it-provides-a-foundation-for-future-enhancements-such-as-online-payments-email-notifications-and-automated-booking-confirmations">6. It provides a foundation for future enhancements, such as online payments, email notifications, and automated booking confirmations.</h1>
+<h2 id="65-limitations">6.5 Limitations</h2>
+<p>Although the Event Management System simplifies event-related activities, some limitations may remain depending on the implemented features:</p>
+<p>- Internet access may be required for online use.</p>
+<p>- Online payment facilities may not be available.</p>
+<p>- Email or SMS notifications may require additional integration.</p>
+<p>- The system&#x27;s performance may depend on the hosting environment and database design.</p>
+<p>- Security depends on the authentication and data protection measures implemented.</p>
+<h2 id="66-conclusion">6.6 Conclusion</h2>
+<p>The implementation and evaluation of the Event Management System demonstrate how a web-based application can simplify event planning, event information management, and user registration. The system combines different modules into a single platform, making event-related tasks more organized and convenient.</p>
+<p>The evaluation process helps verify whether the implemented features meet the project requirements and identifies areas for improvement. Overall, the Event Management System is a useful mini project that demonstrates the practical application of web development, database management, software testing, and system evaluation.</p>
+<h1 id="7-conclusion-and-future-enhancements">7: CONCLUSION AND FUTURE ENHANCEMENTS</h1>
+<p>The Event Management System is a web-based application developed to simplify and improve the process of planning, organizing, and managing events. The main objective of this project is to provide an efficient and user-friendly platform for managing event details and registrations. The system helps reduce manual work, minimize paperwork, save time, and improve the overall efficiency of event management activities.</p>
+<p>The system allows users to view available events, check event details, and register for their preferred events. It also provides administrative features to manage event information and registration records. By maintaining event-related information in an organized manner, the system makes the process more convenient for both users and administrators.</p>
+<p>This mini project provides practical knowledge of web development, database management, software design, implementation, and testing. It demonstrates how information technology can be used to solve real-world problems associated with traditional event management methods.</p>
+<p>In conclusion, the Event Management System is a useful solution for managing events in a systematic and organized way. It can be further improved by adding advanced features to make the system more reliable, secure, and efficient.</p>
+<h2 id="72-future-enhancements">7.2 Future Enhancements</h2>
+<p>Although the Event Management System provides basic event management facilities, several additional features can be implemented in the future to improve its functionality and performance.</p>
+<h1 id="1-online-payment-integration">1. Online Payment Integration</h1>
+<p>An online payment facility can be added to allow users to pay event registration fees securely through digital payment methods such as UPI, debit cards, and credit cards.</p>
+<h1 id="2-email-and-sms-notifications">2. Email and SMS Notifications</h1>
+<p>The system can send automatic notifications to users regarding successful registration, upcoming events, schedule changes, and cancellations.</p>
+<h1 id="3-mobile-application">3. Mobile Application</h1>
+<p>A mobile application can be developed for Android and iOS devices so that users can access event information and register for events from their smartphones.</p>
+<h1 id="4-advanced-search-and-filtering">4. Advanced Search and Filtering</h1>
+<p>Advanced search options can be introduced to help users find events based on category, date, location, price, and event type.</p>
+<h1 id="5-qr-code-based-entry-system">5. QR Code-Based Entry System</h1>
+<p>QR codes can be generated for registered participants. These codes can be scanned at the event venue to verify registration and simplify entry management.</p>
+<h1 id="6-feedback-and-rating-system">6. Feedback and Rating System</h1>
+<p>A feedback module can be added to allow participants to rate events and share their experiences. This feedback can help organizers improve future events.</p>
+<h1 id="7-improved-security">7. Improved Security</h1>
+<p>Advanced security features, such as encrypted communication, secure password storage, role-based access control, and stronger input validation, can be implemented to protect user information.</p>
+<h1 id="8-reports-and-analytics">8. Reports and Analytics</h1>
+<p>The administrator can be provided with graphical reports showing the number of registrations, popular events, participant details, and event performance. These reports can support better decision-making.</p>
+<h1 id="9-social-media-integration">9. Social Media Integration</h1>
+<p>The system can be integrated with social media platforms to allow users to share event information and help organizers promote upcoming events.</p>
+<h1 id="10-cloud-based-deployment">10. Cloud-Based Deployment</h1>
+<p>The application can be hosted on a cloud platform to improve accessibility, scalability, and availability for users from different locations.</p>
+<h2 id="73-final-remarks">7.3 Final Remarks</h2>
+<p>The Event Management System has the potential to make event planning and management easier, faster, and more organized. The proposed future enhancements can expand its capabilities and provide a better experience for users and administrators. With continuous development and improvement, the system can become a comprehensive platform for managing educational, cultural, corporate, and social events.</p>
+</article>
+</main>
+<footer>Prepared as a digital presentation of the supplied mini project report. This website presents the document content; it does not itself implement a live PHP/MySQL event registration system.</footer>
+</body>
+</html>
